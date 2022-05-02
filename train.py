@@ -1,6 +1,6 @@
 import torch
 from dataset import HorseZebraDataset
-import sys
+# import sys
 from utils import save_checkpoint, load_checkpoint
 from torch.utils.data import DataLoader
 import torch.nn as nn
@@ -88,7 +88,7 @@ def train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, l1, mse, d
         loop.set_postfix(H_real=H_reals/(idx+1), H_fake=H_fakes/(idx+1))
 
 
-def main(data_A, data_B):
+def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=config.NUM_WORKERS):
     disc_H = Discriminator(in_channels=3).to(config.DEVICE)
     disc_Z = Discriminator(in_channels=3).to(config.DEVICE)
     gen_Z = Generator(img_channels=3, num_residuals=9).to(config.DEVICE)
@@ -127,20 +127,22 @@ def main(data_A, data_B):
         root_zebra=config.TRAIN_DIR+"/"+data_B,
         transform=config.transforms
     )
-    # val_dataset = HorseZebraDataset(
-    #    root_horse=config.VAL_DIR+"/horses", root_zebra=config.VAL_DIR+"/zebras", transform=config.transforms
-    # )
-    # val_loader = DataLoader(
-    #     val_dataset,
-    #     batch_size=1,
-    #     shuffle=False,
-    #     pin_memory=True,
-    # )
+    val_dataset = HorseZebraDataset(
+       root_horse=config.VAL_DIR+"/"+data_A,
+       root_zebra=config.VAL_DIR+"/"+data_B,
+       transform=config.transforms
+    )
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=1,
+        shuffle=False,
+        pin_memory=True,
+    )
     loader = DataLoader(
         dataset,
         batch_size=config.BATCH_SIZE,
         shuffle=True,
-        num_workers=config.NUM_WORKERS,
+        num_workers=num_workers,
         pin_memory=True
     )
     g_scaler = torch.cuda.amp.GradScaler()

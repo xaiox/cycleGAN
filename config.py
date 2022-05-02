@@ -9,7 +9,7 @@ BATCH_SIZE = 1
 LEARNING_RATE = 1e-5
 LAMBDA_IDENTITY = 0.0
 LAMBDA_CYCLE = 10
-NUM_WORKERS = 4
+NUM_WORKERS = 0
 NUM_EPOCHS = 10
 LOAD_MODEL = False
 SAVE_MODEL = True
@@ -29,7 +29,7 @@ transforms = A.Compose(
 )
 
 
-IMAGE_A_NAME = 'photo'
-IMAGE_B_NAME = 'fake_photo'
+IMAGE_A_NAME = 'mini_horse'
+IMAGE_B_NAME = 'mini_zebra'
 
-SAVE_IMG_NUM = 50
+SAVE_IMG_NUM = 5
