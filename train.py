@@ -1,19 +1,20 @@
-import os
 import sys
 
+from matplotlib import pyplot as plt
 import torch
-from dataset import HorseZebraDataset
-# import sys
-from utils import save_checkpoint, load_checkpoint
-from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
-import config
-from tqdm import tqdm
+from torch.utils.data import DataLoader
 from torchvision.utils import save_image
+from tqdm import tqdm
+
+import config
+from dataset import HorseZebraDataset
 from discriminator_model import Discriminator
 from generator_model import Generator
-from matplotlib import pyplot as plt
+# import sys
+from utils import save_checkpoint, load_checkpoint
+
 
 def train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, l1, mse, d_scaler, g_scaler):
     H_reals = 0
