@@ -104,7 +104,7 @@ def test(loader, gen_Z, gen_H):
     # img = plt.imread(f"results/fake_{config.IMAGE_A_NAME}_{idx-1}.png")
     # plt.show(img)
 
-def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=config.NUM_WORKERS):
+def main(num_workers=config.NUM_WORKERS):
     disc_H = Discriminator(in_channels=3).to(config.DEVICE)
     disc_Z = Discriminator(in_channels=3).to(config.DEVICE)
     gen_Z = Generator(img_channels=3, num_residuals=9).to(config.DEVICE)
@@ -179,9 +179,11 @@ def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=con
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
-        main(config.IMAGE_A_NAME, config.IMAGE_B_NAME)
+        data_A = config.IMAGE_A_NAME
+        data_B = config.IMAGE_B_NAME
+        main()
     else:
         data_A = sys.argv[1]
         data_B = sys.argv[2]
         print(data_A, data_B)
-        main(data_A, data_B)
+        main()
