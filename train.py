@@ -94,8 +94,8 @@ def test(loader, gen_Z, gen_H):
         horse = horse.to(config.DEVICE)
         fake_horse = gen_H(zebra)
         fake_zebra = gen_Z(horse)
-        plt.imshow(fake_zebra)
-        plt.imshow(fake_horse)
+        img_zebra = plt.imread(fake_zebra)
+        img_horse = plt.imread(fake_horse)
 
 def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=config.NUM_WORKERS):
     disc_H = Discriminator(in_channels=3).to(config.DEVICE)
