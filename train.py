@@ -10,6 +10,7 @@ from tqdm import tqdm
 from torchvision.utils import save_image
 from discriminator_model import Discriminator
 from generator_model import Generator
+from matplotlib import pyplot as plt
 
 def train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, l1, mse, d_scaler, g_scaler):
     H_reals = 0
@@ -87,6 +88,14 @@ def train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, l1, mse, d
 
         loop.set_postfix(H_real=H_reals/(idx+1), H_fake=H_fakes/(idx+1))
 
+def test(loader, gen_Z, gen_H):
+    for zebra, horse in loader:
+        zebra = zebra.to(config.DEVICE)
+        horse = horse.to(config.DEVICE)
+        fake_horse = gen_H(zebra)
+        fake_zebra = gen_Z(horse)
+        plt.imshow(fake_zebra)
+        plt.imshow(fake_horse)
 
 def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=config.NUM_WORKERS):
     disc_H = Discriminator(in_channels=3).to(config.DEVICE)
@@ -158,6 +167,7 @@ def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=con
             save_checkpoint(disc_H, opt_disc, filename=config.CHECKPOINT_CRITIC_H)
             save_checkpoint(disc_Z, opt_disc, filename=config.CHECKPOINT_CRITIC_Z)
 
+    test(val_loader, gen_Z, gen_H)
 
 if __name__ == "__main__":
     main(config.IMAGE_A_NAME, config.IMAGE_B_NAME)
