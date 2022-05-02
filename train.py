@@ -100,7 +100,7 @@ def test(loader, gen_Z, gen_H):
         save_image(fake_horse * 0.5 + 0.5, f"results/fake_{config.IMAGE_A_NAME}_{idx}.png")
         save_image(fake_zebra * 0.5 + 0.5, f"results/fake_{config.IMAGE_B_NAME}_{idx}.png")
         idx += 1
-    img = plt.imread(f"results/fake_{config.IMAGE_A_NAME}_{idx}.png")
+    img = plt.imread(f"results/fake_{config.IMAGE_A_NAME}_{idx-1}.png")
     plt.show(img)
 
 def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=config.NUM_WORKERS):
@@ -163,15 +163,15 @@ def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=con
     g_scaler = torch.cuda.amp.GradScaler()
     d_scaler = torch.cuda.amp.GradScaler()
 
-    # for epoch in range(config.NUM_EPOCHS):
-    #     print(f'epoch:{epoch}/{config.NUM_EPOCHS}')
-    #     train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, L1, mse, d_scaler, g_scaler)
-    #
-    #     if config.SAVE_MODEL:
-    #         save_checkpoint(gen_H, opt_gen, filename=config.CHECKPOINT_GEN_H)
-    #         save_checkpoint(gen_Z, opt_gen, filename=config.CHECKPOINT_GEN_Z)
-    #         save_checkpoint(disc_H, opt_disc, filename=config.CHECKPOINT_CRITIC_H)
-    #         save_checkpoint(disc_Z, opt_disc, filename=config.CHECKPOINT_CRITIC_Z)
+    for epoch in range(config.NUM_EPOCHS):
+        print(f'epoch:{epoch}/{config.NUM_EPOCHS}')
+        train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, L1, mse, d_scaler, g_scaler)
+
+        if config.SAVE_MODEL:
+            save_checkpoint(gen_H, opt_gen, filename=config.CHECKPOINT_GEN_H)
+            save_checkpoint(gen_Z, opt_gen, filename=config.CHECKPOINT_GEN_Z)
+            save_checkpoint(disc_H, opt_disc, filename=config.CHECKPOINT_CRITIC_H)
+            save_checkpoint(disc_Z, opt_disc, filename=config.CHECKPOINT_CRITIC_Z)
 
     test(val_loader, gen_Z, gen_H)
 
