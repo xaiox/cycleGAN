@@ -1,4 +1,5 @@
 import os
+import sys
 
 import torch
 from dataset import HorseZebraDataset
@@ -85,8 +86,8 @@ def train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, l1, mse, d
         g_scaler.update()
 
         if idx % config.SAVE_IMG_NUM == 0:
-            save_image(fake_horse*0.5+0.5, f"saved_images/{config.IMAGE_A_NAME}_{idx}.png")
-            save_image(fake_zebra*0.5+0.5, f"saved_images/{config.IMAGE_B_NAME}_{idx}.png")
+            save_image(fake_horse*0.5+0.5, f"saved_images/{data_A}_{idx}.png")
+            save_image(fake_zebra*0.5+0.5, f"saved_images/{data_B}_{idx}.png")
 
         loop.set_postfix(H_real=H_reals/(idx+1), H_fake=H_fakes/(idx+1))
 
@@ -97,11 +98,11 @@ def test(loader, gen_Z, gen_H):
         horse = horse.to(config.DEVICE)
         fake_horse = gen_H(zebra)
         fake_zebra = gen_Z(horse)
-        save_image(fake_horse * 0.5 + 0.5, f"results/fake_{config.IMAGE_A_NAME}_{idx}.png")
-        save_image(fake_zebra * 0.5 + 0.5, f"results/fake_{config.IMAGE_B_NAME}_{idx}.png")
+        save_image(fake_horse * 0.5 + 0.5, f"results/fake_{data_A}_{idx}.png")
+        save_image(fake_zebra * 0.5 + 0.5, f"results/fake_{data_B}_{idx}.png")
         idx += 1
-    img = plt.imread(f"results/fake_{config.IMAGE_A_NAME}_{idx-1}.png")
-    plt.show(img)
+    # img = plt.imread(f"results/fake_{config.IMAGE_A_NAME}_{idx-1}.png")
+    # plt.show(img)
 
 def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=config.NUM_WORKERS):
     disc_H = Discriminator(in_channels=3).to(config.DEVICE)
@@ -177,4 +178,10 @@ def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=con
 
 
 if __name__ == "__main__":
-    main(config.IMAGE_A_NAME, config.IMAGE_B_NAME)
+    if len(sys.argv) == 1:
+        main(config.IMAGE_A_NAME, config.IMAGE_B_NAME)
+    else:
+        data_A = sys.argv[1]
+        data_B = sys.argv[2]
+        print(data_A, data_B)
+        main(data_A, data_B)
