@@ -97,8 +97,8 @@ def test(loader, gen_Z, gen_H):
         horse = horse.to(config.DEVICE)
         fake_horse = gen_H(zebra)
         fake_zebra = gen_Z(horse)
-        save_image(fake_horse * 0.5 + 0.5, f"result/fake_{config.IMAGE_A_NAME}_{idx}.png")
-        save_image(fake_zebra * 0.5 + 0.5, f"result/fake_{config.IMAGE_B_NAME}_{idx}.png")
+        save_image(fake_horse * 0.5 + 0.5, f"results/fake_{config.IMAGE_A_NAME}_{idx}.png")
+        save_image(fake_zebra * 0.5 + 0.5, f"results/fake_{config.IMAGE_B_NAME}_{idx}.png")
         idx += 1
 
 def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=config.NUM_WORKERS):
