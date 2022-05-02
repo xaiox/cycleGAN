@@ -2,7 +2,7 @@ import torch
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DEVICE = device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 TRAIN_DIR = "data/train"
 VAL_DIR = "data/val"
 BATCH_SIZE = 1
