@@ -1,3 +1,5 @@
+import os
+
 import torch
 from dataset import HorseZebraDataset
 # import sys
@@ -89,13 +91,15 @@ def train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, l1, mse, d
         loop.set_postfix(H_real=H_reals/(idx+1), H_fake=H_fakes/(idx+1))
 
 def test(loader, gen_Z, gen_H):
+    idx = 0
     for zebra, horse in loader:
         zebra = zebra.to(config.DEVICE)
         horse = horse.to(config.DEVICE)
         fake_horse = gen_H(zebra)
         fake_zebra = gen_Z(horse)
-        img_zebra = plt.imread(fake_zebra)
-        img_horse = plt.imread(fake_horse)
+        save_image(fake_horse * 0.5 + 0.5, f"result/fake_{config.IMAGE_A_NAME}_{idx}.png")
+        save_image(fake_zebra * 0.5 + 0.5, f"result/fake_{config.IMAGE_B_NAME}_{idx}.png")
+        idx += 1
 
 def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=config.NUM_WORKERS):
     disc_H = Discriminator(in_channels=3).to(config.DEVICE)
@@ -157,17 +161,18 @@ def main(data_A=config.IMAGE_A_NAME, data_B=config.IMAGE_B_NAME, num_workers=con
     g_scaler = torch.cuda.amp.GradScaler()
     d_scaler = torch.cuda.amp.GradScaler()
 
-    for epoch in range(config.NUM_EPOCHS):
-        print(f'epoch:{epoch}/{config.NUM_EPOCHS}')
-        train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, L1, mse, d_scaler, g_scaler)
-
-        if config.SAVE_MODEL:
-            save_checkpoint(gen_H, opt_gen, filename=config.CHECKPOINT_GEN_H)
-            save_checkpoint(gen_Z, opt_gen, filename=config.CHECKPOINT_GEN_Z)
-            save_checkpoint(disc_H, opt_disc, filename=config.CHECKPOINT_CRITIC_H)
-            save_checkpoint(disc_Z, opt_disc, filename=config.CHECKPOINT_CRITIC_Z)
+    # for epoch in range(config.NUM_EPOCHS):
+    #     print(f'epoch:{epoch}/{config.NUM_EPOCHS}')
+    #     train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, L1, mse, d_scaler, g_scaler)
+    #
+    #     if config.SAVE_MODEL:
+    #         save_checkpoint(gen_H, opt_gen, filename=config.CHECKPOINT_GEN_H)
+    #         save_checkpoint(gen_Z, opt_gen, filename=config.CHECKPOINT_GEN_Z)
+    #         save_checkpoint(disc_H, opt_disc, filename=config.CHECKPOINT_CRITIC_H)
+    #         save_checkpoint(disc_Z, opt_disc, filename=config.CHECKPOINT_CRITIC_Z)
 
     test(val_loader, gen_Z, gen_H)
+
 
 if __name__ == "__main__":
     main(config.IMAGE_A_NAME, config.IMAGE_B_NAME)
