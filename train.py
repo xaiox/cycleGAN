@@ -88,7 +88,7 @@ def train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, l1, mse, d
         loop.set_postfix(H_real=H_reals/(idx+1), H_fake=H_fakes/(idx+1))
 
 
-def main():
+def main(data_A, data_B):
     disc_H = Discriminator(in_channels=3).to(config.DEVICE)
     disc_Z = Discriminator(in_channels=3).to(config.DEVICE)
     gen_Z = Generator(img_channels=3, num_residuals=9).to(config.DEVICE)
@@ -123,8 +123,8 @@ def main():
         )
 
     dataset = HorseZebraDataset(
-        root_horse=config.TRAIN_DIR+"/"+config.IMAGE_A_NAME,
-        root_zebra=config.TRAIN_DIR+"/"+config.IMAGE_B_NAME,
+        root_horse=config.TRAIN_DIR+"/"+data_A,
+        root_zebra=config.TRAIN_DIR+"/"+data_B,
         transform=config.transforms
     )
     # val_dataset = HorseZebraDataset(
@@ -158,4 +158,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(config.IMAGE_A_NAME, config.IMAGE_B_NAME)
