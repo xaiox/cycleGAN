@@ -87,8 +87,8 @@ def train_fn(disc_H, disc_Z, gen_Z, gen_H, loader, opt_disc, opt_gen, l1, mse, d
         g_scaler.update()
 
         if idx % config.SAVE_IMG_NUM == 0:
-            save_image(fake_horse*0.5+0.5, f"saved_images/{data_A}_{idx}.png")
-            save_image(fake_zebra*0.5+0.5, f"saved_images/{data_B}_{idx}.png")
+            save_image(fake_horse*0.5+0.5, f"saved_images/fake_{data_A}_{idx}.png")
+            save_image(fake_zebra*0.5+0.5, f"saved_images/fake_{data_B}_{idx}.png")
 
         loop.set_postfix(H_real=H_reals/(idx+1), H_fake=H_fakes/(idx+1))
 
