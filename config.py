@@ -9,8 +9,8 @@ BATCH_SIZE = 1
 LEARNING_RATE = 1e-5
 LAMBDA_IDENTITY = 0.0
 LAMBDA_CYCLE = 10
-NUM_WORKERS = 0
-NUM_EPOCHS = 10
+NUM_WORKERS = 2
+NUM_EPOCHS = 20
 LOAD_MODEL = False
 SAVE_MODEL = True
 CHECKPOINT_GEN_H = "genh.pth.tar"
@@ -32,4 +32,4 @@ transforms = A.Compose(
 IMAGE_A_NAME = 'mini_horse'
 IMAGE_B_NAME = 'mini_zebra'
 
-SAVE_IMG_NUM = 5
+SAVE_IMG_NUM = 10
