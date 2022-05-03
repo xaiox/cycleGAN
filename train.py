@@ -125,7 +125,7 @@ def main(num_workers=config.NUM_WORKERS):
     L1 = nn.L1Loss()
     mse = nn.MSELoss()
 
-    if config.LOAD_MODEL:
+    if config.LOAD_MODEL or 'load_model' in sys.argv:
         load_checkpoint(
             config.CHECKPOINT_GEN_H, gen_H, opt_gen, config.LEARNING_RATE,
         )
