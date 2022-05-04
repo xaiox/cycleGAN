@@ -16,4 +16,4 @@ python train.py apples oranges
 
 训练结束后会自动将/data/val中相同名称的数据集放入模型，并将结果放入results文件夹
 
-而saved文件夹存放训练过程中产生的图片
+而saved_images文件夹存放训练过程中产生的图片
