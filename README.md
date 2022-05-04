@@ -3,7 +3,7 @@
 学习
 https://github.com/aladdinpersson/Machine-Learning-Collection
 
-###项目说明：
+### 项目说明：
 训练时接受三个参数分别是 数据集(在data/train/中)、数据集、训练前是否导入模型（写上load_model）
 
 例如`
