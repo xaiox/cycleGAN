@@ -7,8 +7,10 @@ https://github.com/aladdinpersson/Machine-Learning-Collection
 训练时接受三个参数分别是 数据集(在data/train/中)、数据集、训练前是否导入模型（写上load_model）
 
 例如
+
 `
 python train.py horses zebras load_model
+
 python train.py photo fake_photo
 `
 除此之外，在config.py中有更多的参数调整
